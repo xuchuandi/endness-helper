@@ -5,7 +5,7 @@
         'type' => 'library',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
-        'reference' => '1dcc2f63712ca51d5c81c138dc8e230413d6f41f',
+        'reference' => 'f925ed98f82daec83f0c1d2dc800eda765455f7f',
         'name' => 'endness/helper',
         'dev' => true,
     ),
@@ -100,7 +100,7 @@
             'type' => 'library',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
-            'reference' => '1dcc2f63712ca51d5c81c138dc8e230413d6f41f',
+            'reference' => 'f925ed98f82daec83f0c1d2dc800eda765455f7f',
             'dev_requirement' => false,
         ),
         'fig/http-message-util' => array(

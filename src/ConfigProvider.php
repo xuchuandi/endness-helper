@@ -9,7 +9,7 @@ declare(strict_types=1);
  * @contact  www.yunEndness.cn 7*12 9:00-21:00
  * @license  https://www.yunEndness.cn/LICENSE
  */
-namespace Endness\Helper;
+namespace Endness;
 
 class ConfigProvider
 {

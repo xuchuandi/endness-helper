@@ -69,7 +69,7 @@
   },
   "extra": {
     "hyperf": {
-      "config": "Endness\\Helper\\ConfigProvider"
+      "config": "Endness\\ConfigProvider"
     }
   }
 }
