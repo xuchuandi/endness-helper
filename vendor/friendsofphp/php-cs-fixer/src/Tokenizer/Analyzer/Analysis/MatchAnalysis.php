@@ -15,14 +15,13 @@ declare(strict_types=1);
 namespace PhpCsFixer\Tokenizer\Analyzer\Analysis;
 
 /**
+ * @readonly
+ *
  * @internal
  */
 final class MatchAnalysis extends AbstractControlCaseStructuresAnalysis
 {
-    /**
-     * @var null|DefaultAnalysis
-     */
-    private $defaultAnalysis;
+    private ?DefaultAnalysis $defaultAnalysis;
 
     public function __construct(int $index, int $open, int $close, ?DefaultAnalysis $defaultAnalysis)
     {

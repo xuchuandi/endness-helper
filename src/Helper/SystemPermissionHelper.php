@@ -15,8 +15,9 @@ use Endness\Annotation\SystemPermission;
 use Endness\JsonRpc\Publics\SystemMenuServiceInterface;
 use Hyperf\DbConnection\Db;
 use Hyperf\Di\Annotation\AnnotationCollector;
-use Hyperf\Utils\ApplicationContext;
-use Hyperf\Utils\Codec\Json;
+use Hyperf\Context\ApplicationContext;
+use Hyperf\Codec\Json;
+use function Hyperf\Support\env;
 
 class SystemPermissionHelper
 {

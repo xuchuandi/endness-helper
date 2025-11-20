@@ -17,19 +17,15 @@ namespace PhpCsFixer\Tokenizer\Analyzer\Analysis;
 /**
  * @author Kuba Werłos <werlos@gmail.com>
  *
+ * @readonly
+ *
  * @internal
  */
 final class CaseAnalysis
 {
-    /**
-     * @var int
-     */
-    private $index;
+    private int $index;
 
-    /**
-     * @var int
-     */
-    private $colonIndex;
+    private int $colonIndex;
 
     public function __construct(int $index, int $colonIndex)
     {

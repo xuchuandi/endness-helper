@@ -1,5 +1,10 @@
 <?php
-namespace Endness\Helper\DesignPattern\AbstractFactoryPattern\AbstractFactory\Channel;
+namespace Endness\Helper\DesignPattern\AbstractFactoryPattern;
+
+use Endness\Helper\DesignPattern\AbstractFactoryPattern\AbstractFactory\Channel\Channel;
+use Endness\Helper\DesignPattern\AbstractFactoryPattern\AbstractFactory\Channel\IChannel;
+use Endness\Helper\DesignPattern\AbstractFactoryPattern\AbstractFactory\Module\IUser\XiaomiUser;
+use Endness\Helper\DesignPattern\AbstractFactoryPattern\AbstractFactory\Module\IPay\XiaomiPay;
 /**
  * 小米渠道
  */

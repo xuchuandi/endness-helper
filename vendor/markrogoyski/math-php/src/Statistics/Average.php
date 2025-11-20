@@ -191,7 +191,11 @@ class Average
      * @param float[] $numbers
      * @param float   $value
      *
-     * @return array
+     * @return array{
+     *     lower: array<float>,
+     *     upper: array<float>,
+     *     equal: int,
+     * }
      */
     private static function splitAtValue(array $numbers, float $value): array
     {
@@ -455,7 +459,7 @@ class Average
      * x cubic = ³/  -  ∑ xᵢ³
      *           √   n ⁱ⁼¹
      *
-     * @param array $numbers
+     * @param array<float> $numbers
      *
      * @return float
      *
@@ -480,21 +484,21 @@ class Average
      * This number of points to be discarded is given as a percentage of the total number of points.
      * https://en.wikipedia.org/wiki/Truncated_mean
      *
-     * Trim count = floor( (trim percent / 100) * sample size )
+     * Trim count = floor((trim percent / 100) * sample size)
      *
      * For example: [8, 3, 7, 1, 3, 9] with a trim of 20%
      * First sort the list: [1, 3, 3, 7, 8, 9]
      * Sample size = 6
-     * Then determine trim count: floot(20/100 * 6 ) = 1
+     * Then determine trim count: floor(20/100 * 6) = 1
      * Trim the list by removing 1 from each end: [3, 3, 7, 8]
      * Finally, find the mean: 5.2
      *
      * @param float[] $numbers
-     * @param int     $trim_percent Percent between 0-99
+     * @param int     $trim_percent Percent between 0-50 indicating percent of observations trimmed from each end of distribution
      *
      * @return float
      *
-     * @throws Exception\OutOfBoundsException if trim percent is not between 0 and 99
+     * @throws Exception\OutOfBoundsException if trim percent is not between 0 and 50
      * @throws Exception\BadDataException if the input array of numbers is empty
      */
     public static function truncatedMean(array $numbers, int $trim_percent): float
@@ -502,14 +506,18 @@ class Average
         if (empty($numbers)) {
             throw new Exception\BadDataException('Cannot find the truncated mean of an empty list of numbers');
         }
-        if ($trim_percent < 0 || $trim_percent > 99) {
-            throw new Exception\OutOfBoundsException('Trim percent must be between 0 and 99.');
+        if ($trim_percent < 0 || $trim_percent > 50) {
+            throw new Exception\OutOfBoundsException('Trim percent must be between 0 and 50.');
         }
 
         $n          = \count($numbers);
         $trim_count = \floor($n * ($trim_percent / 100));
 
         \sort($numbers);
+        if ($trim_percent == 50) {
+            return self::median($numbers);
+        }
+
         for ($i = 1; $i <= $trim_count; $i++) {
             \array_shift($numbers);
             \array_pop($numbers);
@@ -713,11 +721,11 @@ class Average
      *
      * Each weighted average = ∑(weighted values) / ∑(weights)
      *
-     * @param  array  $numbers
-     * @param  int    $n       n-point moving average
-     * @param  array  $weights Weights for each n points
+     * @param  array<int|float>  $numbers
+     * @param  int               $n       n-point moving average
+     * @param  array<int|float>  $weights Weights for each n points
      *
-     * @return array of averages
+     * @return array<float> of averages
      *
      * @throws Exception\BadDataException if number of weights is not equal to number of n-points
      */
@@ -749,10 +757,10 @@ class Average
      *   where
      *    α: coefficient that represents the degree of weighting decrease, a constant smoothing factor between 0 and 1.
      *
-     * @param array  $numbers
-     * @param int    $n       Length of the EPA
+     * @param array<int|float>  $numbers
+     * @param int               $n       Length of the EPA
      *
-     * @return array of exponential moving averages
+     * @return array<float> of exponential moving averages
      */
     public static function exponentialMovingAverage(array $numbers, int $n): array
     {
@@ -911,10 +919,20 @@ class Average
      * Get a report of all the averages over a list of numbers
      * Includes mean, median mode, geometric mean, harmonic mean, quardratic mean
      *
-     * @param array $numbers
+     * @param array<float> $numbers
      *
-     * @return array [ mean, median, mode, geometric_mean, harmonic_mean,
-     *                 contraharmonic_mean, quadratic_mean, trimean, iqm, cubic_mean ]
+     * @return array{
+     *     mean:                    float,
+     *     median:                  float,
+     *     mode:                    float[],
+     *     geometric_mean:          float,
+     *     harmonic_mean:           float,
+     *     contraharmonic_mean:     float,
+     *     quadratic_mean:          float,
+     *     trimean:                 float,
+     *     iqm:                     float,
+     *     cubic_mean:              float,
+     * }
      *
      * @throws Exception\BadDataException
      * @throws Exception\OutOfBoundsException

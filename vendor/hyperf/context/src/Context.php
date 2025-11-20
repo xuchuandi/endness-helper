@@ -9,25 +9,47 @@ declare(strict_types=1);
  * @contact  group@hyperf.io
  * @license  https://github.com/hyperf/hyperf/blob/master/LICENSE
  */
+
 namespace Hyperf\Context;
 
+use ArrayObject;
+use Closure;
 use Hyperf\Engine\Coroutine;
 
+use function Hyperf\Support\value;
+
+/**
+ * @template TKey of string
+ * @template TValue
+ */
 class Context
 {
-    protected static $nonCoContext = [];
+    /**
+     * @var array<TKey, TValue>
+     */
+    protected static array $nonCoContext = [];
 
-    public static function set(string $id, $value)
+    /**
+     * @param TKey $id
+     * @param TValue $value
+     * @return TValue
+     */
+    public static function set(string $id, mixed $value, ?int $coroutineId = null): mixed
     {
         if (Coroutine::id() > 0) {
-            Coroutine::getContextFor()[$id] = $value;
+            Coroutine::getContextFor($coroutineId)[$id] = $value;
         } else {
             static::$nonCoContext[$id] = $value;
         }
+
         return $value;
     }
 
-    public static function get(string $id, $default = null, $coroutineId = null)
+    /**
+     * @param TKey $id
+     * @return TValue
+     */
+    public static function get(string $id, mixed $default = null, ?int $coroutineId = null): mixed
     {
         if (Coroutine::id() > 0) {
             return Coroutine::getContextFor($coroutineId)[$id] ?? $default;
@@ -36,7 +58,10 @@ class Context
         return static::$nonCoContext[$id] ?? $default;
     }
 
-    public static function has(string $id, $coroutineId = null)
+    /**
+     * @param TKey $id
+     */
+    public static function has(string $id, ?int $coroutineId = null): bool
     {
         if (Coroutine::id() > 0) {
             return isset(Coroutine::getContextFor($coroutineId)[$id]);
@@ -47,9 +72,15 @@ class Context
 
     /**
      * Release the context when you are not in coroutine environment.
+     *
+     * @param TKey $id
      */
-    public static function destroy(string $id)
+    public static function destroy(string $id, ?int $coroutineId = null): void
     {
+        if (Coroutine::id() > 0) {
+            unset(Coroutine::getContextFor($coroutineId)[$id]);
+        }
+
         unset(static::$nonCoContext[$id]);
     }
 
@@ -60,6 +91,7 @@ class Context
     public static function copy(int $fromCoroutineId, array $keys = []): void
     {
         $from = Coroutine::getContextFor($fromCoroutineId);
+
         if ($from === null) {
             return;
         }
@@ -77,34 +109,48 @@ class Context
 
     /**
      * Retrieve the value and override it by closure.
+     *
+     * @param TKey $id
+     * @param (Closure(TValue):TValue) $closure
      */
-    public static function override(string $id, \Closure $closure)
+    public static function override(string $id, Closure $closure, ?int $coroutineId = null): mixed
     {
         $value = null;
-        if (self::has($id)) {
-            $value = self::get($id);
+
+        if (self::has($id, $coroutineId)) {
+            $value = self::get($id, null, $coroutineId);
         }
+
         $value = $closure($value);
-        self::set($id, $value);
+
+        self::set($id, $value, $coroutineId);
+
         return $value;
     }
 
     /**
      * Retrieve the value and store it if not exists.
-     * @param mixed $value
+     *
+     * @param TKey $id
+     * @param TValue $value
+     * @return TValue
      */
-    public static function getOrSet(string $id, $value)
+    public static function getOrSet(string $id, mixed $value, ?int $coroutineId = null): mixed
     {
-        if (! self::has($id)) {
-            return self::set($id, value($value));
+        if (! self::has($id, $coroutineId)) {
+            return self::set($id, value($value), $coroutineId);
         }
-        return self::get($id);
+
+        return self::get($id, null, $coroutineId);
     }
 
-    public static function getContainer()
+    /**
+     * @return null|array<TKey, TValue>|ArrayObject<TKey, TValue>
+     */
+    public static function getContainer(?int $coroutineId = null)
     {
         if (Coroutine::id() > 0) {
-            return Coroutine::getContextFor();
+            return Coroutine::getContextFor($coroutineId);
         }
 
         return static::$nonCoContext;

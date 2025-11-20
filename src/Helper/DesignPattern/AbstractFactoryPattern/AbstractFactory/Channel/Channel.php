@@ -4,7 +4,7 @@ namespace Endness\Helper\DesignPattern\AbstractFactoryPattern\AbstractFactory\Ch
 /**
  * 渠道 父类
  */
-class Channel{
+abstract class Channel{
     private $_channelData = [];
     private $_channeName = 'xiaomi';
     public function __construct($channelData)

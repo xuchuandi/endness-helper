@@ -14,8 +14,9 @@ declare(strict_types=1);
 namespace Endness\Helper;
 
 use Firebase\JWT\JWT;
-use Hyperf\Utils\Context;
-use Hyperf\Utils\Str;
+use Firebase\JWT\Key;
+use Hyperf\Stringable\Str;
+use Hyperf\Context\Context;
 use Psr\Http\Message\ServerRequestInterface;
 use Throwable;
 
@@ -80,7 +81,7 @@ class JwtHelper
             return null;
         }
         try {
-            return JWT::decode($token, self::getKey($label), [$type]);
+            return JWT::decode($token, new Key(self::getKey($label), $type));
         } catch (Throwable $throwable) {
             return null;
         }

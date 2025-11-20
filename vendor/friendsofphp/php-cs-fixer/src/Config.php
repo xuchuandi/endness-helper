@@ -15,90 +15,89 @@ declare(strict_types=1);
 namespace PhpCsFixer;
 
 use PhpCsFixer\Fixer\FixerInterface;
+use PhpCsFixer\Runner\Parallel\ParallelConfig;
+use PhpCsFixer\Runner\Parallel\ParallelConfigFactory;
 
 /**
  * @author Fabien Potencier <fabien@symfony.com>
  * @author Katsuhiro Ogawa <ko.fivestar@gmail.com>
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
-class Config implements ConfigInterface
+class Config implements ConfigInterface, ParallelAwareConfigInterface
 {
     /**
-     * @var string
+     * @var non-empty-string
      */
-    private $cacheFile = '.php-cs-fixer.cache';
+    private string $cacheFile = '.php-cs-fixer.cache';
 
     /**
-     * @var FixerInterface[]
+     * @var list<FixerInterface>
      */
-    private $customFixers = [];
+    private array $customFixers = [];
 
     /**
-     * @var null|iterable
+     * @var null|iterable<\SplFileInfo>
      */
-    private $finder;
+    private ?iterable $finder = null;
+
+    private string $format = 'txt';
+
+    private bool $hideProgress = false;
 
     /**
-     * @var string
+     * @var non-empty-string
      */
-    private $format = 'txt';
+    private string $indent = '    ';
+
+    private bool $isRiskyAllowed = false;
 
     /**
-     * @var bool
+     * @var non-empty-string
      */
-    private $hideProgress = false;
+    private string $lineEnding = "\n";
+
+    private string $name;
+
+    private ParallelConfig $parallelConfig;
+
+    private ?string $phpExecutable = null;
 
     /**
-     * @var string
+     * @TODO: 4.0 - update to @PER
+     *
+     * @var array<string, array<string, mixed>|bool>
      */
-    private $indent = '    ';
+    private array $rules;
 
-    /**
-     * @var bool
-     */
-    private $isRiskyAllowed = false;
-
-    /**
-     * @var string
-     */
-    private $lineEnding = "\n";
-
-    /**
-     * @var string
-     */
-    private $name;
-
-    /**
-     * @var null|string
-     */
-    private $phpExecutable;
-
-    /**
-     * @var array
-     */
-    private $rules = ['@PSR12' => true];
-
-    /**
-     * @var bool
-     */
-    private $usingCache = true;
+    private bool $usingCache = true;
 
     public function __construct(string $name = 'default')
     {
-        $this->name = $name;
+        // @TODO 4.0 cleanup
+        if (Utils::isFutureModeEnabled()) {
+            $this->name = $name.' (future mode)';
+            $this->rules = ['@PER-CS' => true];
+        } else {
+            $this->name = $name;
+            $this->rules = ['@PSR12' => true];
+        }
+
+        // @TODO 4.0 cleanup
+        if (Utils::isFutureModeEnabled() || filter_var(getenv('PHP_CS_FIXER_PARALLEL'), FILTER_VALIDATE_BOOL)) {
+            $this->parallelConfig = ParallelConfigFactory::detect();
+        } else {
+            $this->parallelConfig = ParallelConfigFactory::sequential();
+        }
     }
 
     /**
-     * {@inheritdoc}
+     * @return non-empty-string
      */
     public function getCacheFile(): string
     {
         return $this->cacheFile;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getCustomFixers(): array
     {
         return $this->customFixers;
@@ -109,88 +108,61 @@ class Config implements ConfigInterface
      */
     public function getFinder(): iterable
     {
-        if (null === $this->finder) {
-            $this->finder = new Finder();
-        }
+        $this->finder ??= new Finder();
 
         return $this->finder;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getFormat(): string
     {
         return $this->format;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getHideProgress(): bool
     {
         return $this->hideProgress;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getIndent(): string
     {
         return $this->indent;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getLineEnding(): string
     {
         return $this->lineEnding;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getName(): string
     {
         return $this->name;
     }
 
-    /**
-     * {@inheritdoc}
-     */
+    public function getParallelConfig(): ParallelConfig
+    {
+        return $this->parallelConfig;
+    }
+
     public function getPhpExecutable(): ?string
     {
         return $this->phpExecutable;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getRiskyAllowed(): bool
     {
         return $this->isRiskyAllowed;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getRules(): array
     {
         return $this->rules;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getUsingCache(): bool
     {
         return $this->usingCache;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function registerCustomFixers(iterable $fixers): ConfigInterface
     {
         foreach ($fixers as $fixer) {
@@ -201,7 +173,7 @@ class Config implements ConfigInterface
     }
 
     /**
-     * {@inheritdoc}
+     * @param non-empty-string $cacheFile
      */
     public function setCacheFile(string $cacheFile): ConfigInterface
     {
@@ -210,9 +182,6 @@ class Config implements ConfigInterface
         return $this;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function setFinder(iterable $finder): ConfigInterface
     {
         $this->finder = $finder;
@@ -220,9 +189,6 @@ class Config implements ConfigInterface
         return $this;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function setFormat(string $format): ConfigInterface
     {
         $this->format = $format;
@@ -230,9 +196,6 @@ class Config implements ConfigInterface
         return $this;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function setHideProgress(bool $hideProgress): ConfigInterface
     {
         $this->hideProgress = $hideProgress;
@@ -241,7 +204,7 @@ class Config implements ConfigInterface
     }
 
     /**
-     * {@inheritdoc}
+     * @param non-empty-string $indent
      */
     public function setIndent(string $indent): ConfigInterface
     {
@@ -251,7 +214,7 @@ class Config implements ConfigInterface
     }
 
     /**
-     * {@inheritdoc}
+     * @param non-empty-string $lineEnding
      */
     public function setLineEnding(string $lineEnding): ConfigInterface
     {
@@ -260,9 +223,13 @@ class Config implements ConfigInterface
         return $this;
     }
 
-    /**
-     * {@inheritdoc}
-     */
+    public function setParallelConfig(ParallelConfig $config): ConfigInterface
+    {
+        $this->parallelConfig = $config;
+
+        return $this;
+    }
+
     public function setPhpExecutable(?string $phpExecutable): ConfigInterface
     {
         $this->phpExecutable = $phpExecutable;
@@ -270,9 +237,6 @@ class Config implements ConfigInterface
         return $this;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function setRiskyAllowed(bool $isRiskyAllowed): ConfigInterface
     {
         $this->isRiskyAllowed = $isRiskyAllowed;
@@ -280,9 +244,6 @@ class Config implements ConfigInterface
         return $this;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function setRules(array $rules): ConfigInterface
     {
         $this->rules = $rules;
@@ -290,9 +251,6 @@ class Config implements ConfigInterface
         return $this;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function setUsingCache(bool $usingCache): ConfigInterface
     {
         $this->usingCache = $usingCache;

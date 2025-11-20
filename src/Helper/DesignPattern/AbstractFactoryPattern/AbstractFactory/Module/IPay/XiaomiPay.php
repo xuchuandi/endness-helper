@@ -1,7 +1,7 @@
 <?php
 namespace Endness\Helper\DesignPattern\AbstractFactoryPattern\AbstractFactory\Module\IPay;
-use Endness\Helper\DesignPattern\AbstractFactoryPattern\AbstractFactory\Module;
-use Endness\Helper\DesignPattern\AbstractFactoryPattern\AbstractFactory\IPayModule;
+use Endness\Helper\DesignPattern\AbstractFactoryPattern\AbstractFactory\Module\Module;
+use Endness\Helper\DesignPattern\AbstractFactoryPattern\AbstractFactory\Module\IPayModule;
 /**
  * 小米渠道支付模块
  */

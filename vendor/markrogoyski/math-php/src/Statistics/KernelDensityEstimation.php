@@ -18,7 +18,7 @@ use MathPHP\Probability\Distribution\Continuous;
  */
 class KernelDensityEstimation
 {
-    /** @var array Data used for the esimtation */
+    /** @var array<float> Data used for the esimtation */
     protected $data;
 
     /** @var int number of data points */
@@ -41,7 +41,7 @@ class KernelDensityEstimation
     /**
      * Constructor
      *
-     * @param array $data data used for the estimation
+     * @param array<float> $data data used for the estimation
      * @param float|null $h the bandwidth
      * @param callable|string|null $kernel a function used to generate the KDE
      *
@@ -49,7 +49,7 @@ class KernelDensityEstimation
      * @throws Exception\OutOfBoundsException h ≤ 0
      * @throws Exception\BadParameterException
      */
-    public function __construct(array $data, float $h = null, $kernel = null)
+    public function __construct(array $data, ?float $h = null, $kernel = null)
     {
         $this->n = \count($data);
         if ($this->n === 0) {
@@ -68,7 +68,7 @@ class KernelDensityEstimation
      *
      * @throws Exception\OutOfBoundsException if h ≤ 0
      */
-    public function setBandwidth(float $h = null): void
+    public function setBandwidth(?float $h = null): void
     {
         if ($h === null) {
             $this->h = $this->getDefaultBandwidth();

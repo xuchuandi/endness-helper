@@ -1,5 +1,8 @@
 <?php
-namespace Endness\Helper\DesignPattern\AbstractFactoryPattern\AbstractFactory\Channel;
+namespace Endness\Helper\DesignPattern\AbstractFactoryPattern;
+
+use Endness\Helper\DesignPattern\AbstractFactoryPattern\AbstractFactory\Channel\Channel;
+use Endness\Helper\DesignPattern\AbstractFactoryPattern\AbstractFactory\Channel\IChannel;
 use Endness\Helper\DesignPattern\AbstractFactoryPattern\AbstractFactory\Module\IUser\HuaweiUser;
 use Endness\Helper\DesignPattern\AbstractFactoryPattern\AbstractFactory\Module\IPay\HuaweiPay;
 /**

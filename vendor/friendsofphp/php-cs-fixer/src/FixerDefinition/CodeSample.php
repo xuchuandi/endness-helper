@@ -16,19 +16,21 @@ namespace PhpCsFixer\FixerDefinition;
 
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
+ *
+ * @readonly
  */
 final class CodeSample implements CodeSampleInterface
 {
-    /**
-     * @var string
-     */
-    private $code;
+    private string $code;
 
     /**
-     * @var null|array
+     * @var null|array<string, mixed>
      */
-    private $configuration;
+    private ?array $configuration;
 
+    /**
+     * @param null|array<string, mixed> $configuration
+     */
     public function __construct(string $code, ?array $configuration = null)
     {
         $this->code = $code;

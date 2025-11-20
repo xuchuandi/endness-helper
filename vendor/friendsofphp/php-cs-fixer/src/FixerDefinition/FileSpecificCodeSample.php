@@ -17,20 +17,19 @@ namespace PhpCsFixer\FixerDefinition;
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  *
+ * @readonly
+ *
  * @internal
  */
 final class FileSpecificCodeSample implements FileSpecificCodeSampleInterface
 {
-    /**
-     * @var CodeSampleInterface
-     */
-    private $codeSample;
+    private CodeSampleInterface $codeSample;
+
+    private \SplFileInfo $splFileInfo;
 
     /**
-     * @var \SplFileInfo
+     * @param null|array<string, mixed> $configuration
      */
-    private $splFileInfo;
-
     public function __construct(
         string $code,
         \SplFileInfo $splFileInfo,
@@ -40,25 +39,16 @@ final class FileSpecificCodeSample implements FileSpecificCodeSampleInterface
         $this->splFileInfo = $splFileInfo;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getCode(): string
     {
         return $this->codeSample->getCode();
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getConfiguration(): ?array
     {
         return $this->codeSample->getConfiguration();
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getSplFileInfo(): \SplFileInfo
     {
         return $this->splFileInfo;

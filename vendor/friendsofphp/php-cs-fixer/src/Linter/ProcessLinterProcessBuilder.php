@@ -19,14 +19,13 @@ use Symfony\Component\Process\Process;
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  *
+ * @readonly
+ *
  * @internal
  */
 final class ProcessLinterProcessBuilder
 {
-    /**
-     * @var string
-     */
-    private $executable;
+    private string $executable;
 
     /**
      * @param string $executable PHP executable

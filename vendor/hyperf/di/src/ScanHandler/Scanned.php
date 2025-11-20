@@ -9,18 +9,13 @@ declare(strict_types=1);
  * @contact  group@hyperf.io
  * @license  https://github.com/hyperf/hyperf/blob/master/LICENSE
  */
+
 namespace Hyperf\Di\ScanHandler;
 
 class Scanned
 {
-    /**
-     * @var bool
-     */
-    protected $scanned;
-
-    public function __construct(bool $scanned)
+    public function __construct(protected bool $scanned)
     {
-        $this->scanned = $scanned;
     }
 
     public function isScanned(): bool

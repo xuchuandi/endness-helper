@@ -15,17 +15,19 @@ declare(strict_types=1);
 namespace PhpCsFixer\Tokenizer\Analyzer\Analysis;
 
 /**
+ * @readonly
+ *
  * @internal
  */
 final class EnumAnalysis extends AbstractControlCaseStructuresAnalysis
 {
     /**
-     * @var CaseAnalysis[]
+     * @var list<CaseAnalysis>
      */
-    private $cases;
+    private array $cases;
 
     /**
-     * @param CaseAnalysis[] $cases
+     * @param list<CaseAnalysis> $cases
      */
     public function __construct(int $index, int $open, int $close, array $cases)
     {
@@ -35,7 +37,7 @@ final class EnumAnalysis extends AbstractControlCaseStructuresAnalysis
     }
 
     /**
-     * @return CaseAnalysis[]
+     * @return list<CaseAnalysis>
      */
     public function getCases(): array
     {

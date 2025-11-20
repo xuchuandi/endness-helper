@@ -9,6 +9,7 @@ declare(strict_types=1);
  * @contact  group@hyperf.io
  * @license  https://github.com/hyperf/hyperf/blob/master/LICENSE
  */
+
 namespace Hyperf\Engine\Http;
 
 use Hyperf\Engine\Contract\Http\ClientInterface;
@@ -51,7 +52,11 @@ class Client extends HttpClient implements ClientInterface
         $result = [];
         foreach ($headers as $name => $header) {
             // The key of header is lower case.
-            $result[$name][] = $header;
+            if (is_array($header)) {
+                $result[$name] = $header;
+            } else {
+                $result[$name][] = $header;
+            }
         }
         if ($this->set_cookie_headers) {
             $result['set-cookie'] = $this->set_cookie_headers;
@@ -60,7 +65,7 @@ class Client extends HttpClient implements ClientInterface
     }
 
     /**
-     * Swoole engine not support two dimensional array.
+     * Swoole engine not support two-dimensional array.
      * @param string[][] $headers
      * @return string[]
      */

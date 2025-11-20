@@ -16,7 +16,7 @@ class ApiHelper
     /*
      * 接口正常响应.
      */
-    public const NORMAL_SUCCESS = 1000;
+    public const NORMAL_SUCCESS = 0;
 
     /*
      * 代码传参缺少等错误，前端需要自查代码.

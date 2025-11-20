@@ -15,8 +15,8 @@ namespace Endness\Helper;
 
 use Hyperf\HttpServer\Router\Dispatched;
 use Hyperf\Redis\RedisFactory;
-use Hyperf\Utils\ApplicationContext;
-use Hyperf\Utils\Context;
+use Hyperf\Context\ApplicationContext;
+use Hyperf\Context\Context;
 use Psr\Http\Message\ServerRequestInterface;
 
 class RequestHelper
@@ -112,14 +112,14 @@ class RequestHelper
     {
         $strId = trim($strId);
         if (! strlen($strId)) {
-            throw new BusinessException(0, '标识不能为空字符');
+            throw new \Exception('标识不能为空字符', ApiHelper::CODE_ERROR);
         }
         if ($intNum <= 0 || $intSec <= 0) {
-            throw new BusinessException(0, '限定的数量或时间，必须是大于0的整数');
+            throw new \Exception('限定的数量或时间，必须是大于0的整数', ApiHelper::CODE_ERROR);
         }
         $objRedis = ApplicationContext::getContainer()->get(RedisFactory::class)->get($strRedisPool);
         if (! $objRedis) {
-            throw new BusinessException(0, '获取Redis连接失败');
+            throw new \Exception('获取Redis连接失败', ApiHelper::CODE_ERROR);
         }
         $strKey = 'rate_limit:' . md5($strId);
         $objRedis->watch($strKey);

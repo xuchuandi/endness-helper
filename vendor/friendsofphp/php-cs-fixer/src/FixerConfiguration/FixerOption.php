@@ -14,17 +14,16 @@ declare(strict_types=1);
 
 namespace PhpCsFixer\FixerConfiguration;
 
+/**
+ * @readonly
+ */
 final class FixerOption implements FixerOptionInterface
 {
-    /**
-     * @var string
-     */
-    private $name;
+    private string $name;
 
-    /**
-     * @var string
-     */
-    private $description;
+    private string $description;
+
+    private bool $isRequired;
 
     /**
      * @var mixed
@@ -32,28 +31,21 @@ final class FixerOption implements FixerOptionInterface
     private $default;
 
     /**
-     * @var bool
+     * @var null|list<string>
      */
-    private $isRequired;
+    private ?array $allowedTypes;
 
     /**
-     * @var null|string[]
+     * @var null|list<null|(callable(mixed): bool)|scalar>
      */
-    private $allowedTypes;
+    private ?array $allowedValues;
+
+    private ?\Closure $normalizer;
 
     /**
-     * @var null|array
-     */
-    private $allowedValues;
-
-    /**
-     * @var null|\Closure
-     */
-    private $normalizer;
-
-    /**
-     * @param mixed         $default
-     * @param null|string[] $allowedTypes
+     * @param mixed                                          $default
+     * @param null|list<string>                              $allowedTypes
+     * @param null|list<null|(callable(mixed): bool)|scalar> $allowedValues
      */
     public function __construct(
         string $name,
@@ -82,37 +74,31 @@ final class FixerOption implements FixerOptionInterface
         $this->default = $default;
         $this->allowedTypes = $allowedTypes;
         $this->allowedValues = $allowedValues;
+
         if (null !== $normalizer) {
             $this->normalizer = $this->unbind($normalizer);
+        } else {
+            $this->normalizer = null;
         }
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getName(): string
     {
         return $this->name;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getDescription(): string
     {
         return $this->description;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function hasDefault(): bool
     {
         return !$this->isRequired;
     }
 
     /**
-     * {@inheritdoc}
+     * @return mixed
      */
     public function getDefault()
     {
@@ -123,25 +109,16 @@ final class FixerOption implements FixerOptionInterface
         return $this->default;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getAllowedTypes(): ?array
     {
         return $this->allowedTypes;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getAllowedValues(): ?array
     {
         return $this->allowedValues;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getNormalizer(): ?\Closure
     {
         return $this->normalizer;

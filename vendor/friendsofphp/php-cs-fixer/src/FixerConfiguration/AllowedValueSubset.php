@@ -15,17 +15,23 @@ declare(strict_types=1);
 namespace PhpCsFixer\FixerConfiguration;
 
 /**
+ * @readonly
+ *
  * @internal
  */
 final class AllowedValueSubset
 {
     /**
-     * @var array
+     * @var list<string>
      */
-    private $allowedValues;
+    private array $allowedValues;
 
+    /**
+     * @param list<string> $allowedValues
+     */
     public function __construct(array $allowedValues)
     {
+        sort($allowedValues, SORT_FLAG_CASE | SORT_STRING);
         $this->allowedValues = $allowedValues;
     }
 
@@ -49,7 +55,10 @@ final class AllowedValueSubset
         return true;
     }
 
-    public function getAllowedValues(): ?array
+    /**
+     * @return list<string>
+     */
+    public function getAllowedValues(): array
     {
         return $this->allowedValues;
     }

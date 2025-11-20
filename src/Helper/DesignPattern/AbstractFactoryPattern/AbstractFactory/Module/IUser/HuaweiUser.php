@@ -1,7 +1,7 @@
 <?php
 namespace Endness\Helper\DesignPattern\AbstractFactoryPattern\AbstractFactory\Module\IUser;
-use Endness\Helper\DesignPattern\AbstractFactoryPattern\AbstractFactory\Module;
-use Endness\Helper\DesignPattern\AbstractFactoryPattern\AbstractFactory\IUserModule;
+use Endness\Helper\DesignPattern\AbstractFactoryPattern\AbstractFactory\Module\Module;
+use Endness\Helper\DesignPattern\AbstractFactoryPattern\AbstractFactory\Module\IUserModule;
 class HuaweiUser extends Module implements IUserModule{
 
     public function login($data)

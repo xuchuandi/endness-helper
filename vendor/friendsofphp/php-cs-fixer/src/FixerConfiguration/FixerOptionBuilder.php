@@ -16,50 +16,36 @@ namespace PhpCsFixer\FixerConfiguration;
 
 final class FixerOptionBuilder
 {
-    /**
-     * @var string
-     */
-    private $name;
+    private string $name;
+
+    private string $description;
 
     /**
-     * @var string
-     */
-    private $description;
-
-    /**
-     * @var mixed
+     * @var null|mixed
      */
     private $default;
 
-    /**
-     * @var bool
-     */
-    private $isRequired = true;
+    private bool $isRequired = true;
 
     /**
-     * @var null|string[]
+     * @var null|list<string>
      */
-    private $allowedTypes;
+    private ?array $allowedTypes = null;
 
     /**
-     * @var null|array
+     * @var null|list<null|(callable(mixed): bool)|scalar>
      */
-    private $allowedValues;
+    private ?array $allowedValues = null;
 
-    /**
-     * @var null|\Closure
-     */
-    private $normalizer;
+    private ?\Closure $normalizer = null;
 
-    /**
-     * @var null|string
-     */
-    private $deprecationMessage;
+    private ?string $deprecationMessage = null;
 
     public function __construct(string $name, string $description)
     {
         $this->name = $name;
         $this->description = $description;
+        $this->default = null;
     }
 
     /**
@@ -76,7 +62,7 @@ final class FixerOptionBuilder
     }
 
     /**
-     * @param string[] $allowedTypes
+     * @param list<string> $allowedTypes
      *
      * @return $this
      */
@@ -88,6 +74,8 @@ final class FixerOptionBuilder
     }
 
     /**
+     * @param list<null|(callable(mixed): bool)|scalar> $allowedValues
+     *
      * @return $this
      */
     public function setAllowedValues(array $allowedValues): self

@@ -25,21 +25,21 @@ interface ConfigInterface
     /**
      * Returns the path to the cache file.
      *
-     * @return null|string Returns null if not using cache
+     * @return null|non-empty-string Returns null if not using cache
      */
     public function getCacheFile(): ?string;
 
     /**
      * Returns the custom fixers to use.
      *
-     * @return FixerInterface[]
+     * @return list<FixerInterface>
      */
     public function getCustomFixers(): array;
 
     /**
      * Returns files to scan.
      *
-     * @return iterable|\Traversable
+     * @return iterable<\SplFileInfo>
      */
     public function getFinder(): iterable;
 
@@ -50,8 +50,14 @@ interface ConfigInterface
      */
     public function getHideProgress(): bool;
 
+    /**
+     * @return non-empty-string
+     */
     public function getIndent(): string;
 
+    /**
+     * @return non-empty-string
+     */
     public function getLineEnding(): string;
 
     /**
@@ -65,6 +71,10 @@ interface ConfigInterface
 
     /**
      * Get configured PHP executable, if any.
+     *
+     * @deprecated
+     *
+     * @TODO 4.0 remove me
      */
     public function getPhpExecutable(): ?string;
 
@@ -77,6 +87,8 @@ interface ConfigInterface
      * Get rules.
      *
      * Keys of array are names of fixers/sets, values are true/false.
+     *
+     * @return array<string, array<string, mixed>|bool>
      */
     public function getRules(): array;
 
@@ -90,27 +102,42 @@ interface ConfigInterface
      *
      * Name of custom fixer should follow `VendorName/rule_name` convention.
      *
-     * @param FixerInterface[]|iterable|\Traversable $fixers
+     * @param iterable<FixerInterface> $fixers
      */
     public function registerCustomFixers(iterable $fixers): self;
 
     /**
      * Sets the path to the cache file.
+     *
+     * @param non-empty-string $cacheFile
      */
     public function setCacheFile(string $cacheFile): self;
 
+    /**
+     * @param iterable<\SplFileInfo> $finder
+     */
     public function setFinder(iterable $finder): self;
 
     public function setFormat(string $format): self;
 
     public function setHideProgress(bool $hideProgress): self;
 
+    /**
+     * @param non-empty-string $indent
+     */
     public function setIndent(string $indent): self;
 
+    /**
+     * @param non-empty-string $lineEnding
+     */
     public function setLineEnding(string $lineEnding): self;
 
     /**
      * Set PHP executable.
+     *
+     * @deprecated
+     *
+     * @TODO 4.0 remove me
      */
     public function setPhpExecutable(?string $phpExecutable): self;
 
@@ -126,6 +153,8 @@ interface ConfigInterface
      * Value for set must be bool (turn it on or off).
      * Value for fixer may be bool (turn it on or off) or array of configuration
      * (turn it on and contains configuration for FixerInterface::configure method).
+     *
+     * @param array<string, array<string, mixed>|bool> $rules
      */
     public function setRules(array $rules): self;
 

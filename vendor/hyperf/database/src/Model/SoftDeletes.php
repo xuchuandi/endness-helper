@@ -9,11 +9,15 @@ declare(strict_types=1);
  * @contact  group@hyperf.io
  * @license  https://github.com/hyperf/hyperf/blob/master/LICENSE
  */
+
 namespace Hyperf\Database\Model;
 
 use Psr\EventDispatcher\StoppableEventInterface;
 
+use function Hyperf\Tappable\tap;
+
 /**
+ * @method static static|\Hyperf\Database\Model\Builder|\Hyperf\Database\Query\Builder restoreOrCreate(array $attributes = [], array $values = [])
  * @method static static|\Hyperf\Database\Model\Builder|\Hyperf\Database\Query\Builder withTrashed(bool $withTrashed = true)
  * @method static static|\Hyperf\Database\Model\Builder|\Hyperf\Database\Query\Builder onlyTrashed()
  * @method static static|\Hyperf\Database\Model\Builder|\Hyperf\Database\Query\Builder withoutTrashed()
@@ -22,10 +26,8 @@ trait SoftDeletes
 {
     /**
      * Indicates if the model is currently force deleting.
-     *
-     * @var bool
      */
-    protected $forceDeleting = false;
+    protected bool $forceDeleting = false;
 
     /**
      * Boot the soft deleting trait for a model.
@@ -42,6 +44,12 @@ trait SoftDeletes
      */
     public function forceDelete()
     {
+        if ($event = $this->fireModelEvent('forceDeleting')) {
+            if ($event instanceof StoppableEventInterface && $event->isPropagationStopped()) {
+                return false;
+            }
+        }
+
         $this->forceDeleting = true;
 
         return tap($this->delete(), function ($deleted) {

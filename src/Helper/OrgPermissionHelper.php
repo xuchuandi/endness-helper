@@ -15,8 +15,10 @@ use Endness\Annotation\OrgPermission;
 use Endness\JsonRpc\Org\OrgMenuServiceInterface;
 use Hyperf\DbConnection\Db;
 use Hyperf\Di\Annotation\AnnotationCollector;
-use Hyperf\Utils\ApplicationContext;
-use Hyperf\Utils\Codec\Json;
+use Hyperf\Context\ApplicationContext;
+use Hyperf\Codec\Json;
+use function Hyperf\Support\env;
+use function Hyperf\Config\config;
 
 class OrgPermissionHelper
 {

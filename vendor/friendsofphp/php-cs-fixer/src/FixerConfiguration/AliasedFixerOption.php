@@ -17,19 +17,15 @@ namespace PhpCsFixer\FixerConfiguration;
 /**
  * @author ntzm
  *
+ * @readonly
+ *
  * @internal
  */
 final class AliasedFixerOption implements FixerOptionInterface
 {
-    /**
-     * @var FixerOptionInterface
-     */
-    private $fixerOption;
+    private FixerOptionInterface $fixerOption;
 
-    /**
-     * @var string
-     */
-    private $alias;
+    private string $alias;
 
     public function __construct(FixerOptionInterface $fixerOption, string $alias)
     {
@@ -42,57 +38,36 @@ final class AliasedFixerOption implements FixerOptionInterface
         return $this->alias;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getName(): string
     {
         return $this->fixerOption->getName();
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getDescription(): string
     {
         return $this->fixerOption->getDescription();
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function hasDefault(): bool
     {
         return $this->fixerOption->hasDefault();
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getDefault()
     {
         return $this->fixerOption->getDefault();
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getAllowedTypes(): ?array
     {
         return $this->fixerOption->getAllowedTypes();
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getAllowedValues(): ?array
     {
         return $this->fixerOption->getAllowedValues();
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getNormalizer(): ?\Closure
     {
         return $this->fixerOption->getNormalizer();

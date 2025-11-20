@@ -9,26 +9,26 @@ declare(strict_types=1);
  * @contact  group@hyperf.io
  * @license  https://github.com/hyperf/hyperf/blob/master/LICENSE
  */
+
 namespace Hyperf\Engine\WebSocket;
 
 use Hyperf\Engine\Contract\WebSocket\WebSocketInterface;
+use Psr\Log\LoggerInterface;
 use Swoole\Http\Request;
 use Swoole\Http\Response;
 use Swoole\WebSocket\CloseFrame;
+use Swoole\WebSocket\Frame as SwFrame;
 
 class WebSocket implements WebSocketInterface
 {
-    /**
-     * @var Response
-     */
-    protected $connection;
+    protected ?Response $connection;
 
     /**
      * @var array<string, callable>
      */
-    protected $events = [];
+    protected array $events = [];
 
-    public function __construct(Response $connection, Request $request)
+    public function __construct(Response $connection, Request $request, protected ?LoggerInterface $logger = null)
     {
         $this->connection = $connection;
         $this->connection->upgrade();
@@ -42,15 +42,37 @@ class WebSocket implements WebSocketInterface
     public function start(): void
     {
         while (true) {
-            $frame = $this->connection->recv();
+            /** @var false|string|SwFrame $frame */
+            $frame = $this->connection->recv(-1);
+            if ($frame === false) {
+                $this->logger?->warning(
+                    sprintf(
+                        '%s:(%s) %s',
+                        'Websocket recv failed:',
+                        swoole_last_error(),
+                        swoole_strerror(swoole_last_error(), 9)
+                    )
+                );
+            }
+
             if ($frame === false || $frame instanceof CloseFrame || $frame === '') {
-                $callback = $this->events[static::ON_CLOSE];
-                $callback($this->connection, $this->connection->fd);
+                if ($callback = $this->events[static::ON_CLOSE] ?? null) {
+                    $callback($this->connection, $this->connection->fd);
+                }
                 break;
             }
 
-            $callback = $this->events[static::ON_MESSAGE];
-            $callback($this->connection, $frame);
+            switch ($frame->opcode) {
+                case Opcode::PING:
+                    $this->connection->push('', Opcode::PONG);
+                    break;
+                case Opcode::PONG:
+                    break;
+                default:
+                    if ($callback = $this->events[static::ON_MESSAGE] ?? null) {
+                        $callback($this->connection, $frame);
+                    }
+            }
         }
 
         $this->connection = null;

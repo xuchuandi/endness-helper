@@ -42,7 +42,7 @@ class StopwatchEvent
      *
      * @throws \InvalidArgumentException When the raw time is not valid
      */
-    public function __construct(float $origin, string $category = null, bool $morePrecision = false, string $name = null)
+    public function __construct(float $origin, ?string $category = null, bool $morePrecision = false, ?string $name = null)
     {
         $this->origin = $this->formatTime($origin);
         $this->category = \is_string($category) ? $category : 'default';
@@ -116,6 +116,8 @@ class StopwatchEvent
 
     /**
      * Stops all non already stopped periods.
+     *
+     * @return void
      */
     public function ensureStopped()
     {

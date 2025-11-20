@@ -15,24 +15,17 @@ declare(strict_types=1);
 namespace PhpCsFixer\Tokenizer\Analyzer\Analysis;
 
 /**
+ * @readonly
+ *
  * @internal
  */
 abstract class AbstractControlCaseStructuresAnalysis
 {
-    /**
-     * @var int
-     */
-    private $index;
+    private int $index;
 
-    /**
-     * @var int
-     */
-    private $open;
+    private int $open;
 
-    /**
-     * @var int
-     */
-    private $close;
+    private int $close;
 
     public function __construct(int $index, int $open, int $close)
     {

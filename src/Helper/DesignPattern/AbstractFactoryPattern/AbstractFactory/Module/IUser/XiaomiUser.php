@@ -1,7 +1,8 @@
 <?php
 namespace Endness\Helper\DesignPattern\AbstractFactoryPattern\AbstractFactory\Module\IUser;
-use Endness\Helper\DesignPattern\AbstractFactoryPattern\AbstractFactory\Module;
-use Endness\Helper\DesignPattern\AbstractFactoryPattern\AbstractFactory\IUserModule;
+
+use Endness\Helper\DesignPattern\AbstractFactoryPattern\AbstractFactory\Module\Module;
+use Endness\Helper\DesignPattern\AbstractFactoryPattern\AbstractFactory\Module\IUserModule;
 /**
  * 小米渠道用户模块
  */

@@ -14,6 +14,8 @@ declare(strict_types=1);
 
 namespace PhpCsFixer\Cache;
 
+use PhpCsFixer\Tokenizer\CodeHasher;
+
 /**
  * Class supports caching information about state of fixing files.
  *
@@ -32,30 +34,21 @@ namespace PhpCsFixer\Cache;
  */
 final class FileCacheManager implements CacheManagerInterface
 {
-    /**
-     * @var FileHandlerInterface
-     */
-    private $handler;
+    public const WRITE_FREQUENCY = 10;
 
-    /**
-     * @var SignatureInterface
-     */
-    private $signature;
+    private FileHandlerInterface $handler;
 
-    /**
-     * @var CacheInterface
-     */
-    private $cache;
+    private SignatureInterface $signature;
 
-    /**
-     * @var bool
-     */
-    private $isDryRun;
+    private bool $isDryRun;
 
-    /**
-     * @var DirectoryInterface
-     */
-    private $cacheDirectory;
+    private DirectoryInterface $cacheDirectory;
+
+    private int $writeCounter = 0;
+
+    private bool $signatureWasUpdated = false;
+
+    private CacheInterface $cache;
 
     public function __construct(
         FileHandlerInterface $handler,
@@ -73,7 +66,9 @@ final class FileCacheManager implements CacheManagerInterface
 
     public function __destruct()
     {
-        $this->writeCache();
+        if (true === $this->signatureWasUpdated || 0 !== $this->writeCounter) {
+            $this->writeCache();
+        }
     }
 
     /**
@@ -105,17 +100,23 @@ final class FileCacheManager implements CacheManagerInterface
 
     public function setFile(string $file, string $fileContent): void
     {
-        $file = $this->cacheDirectory->getRelativePathTo($file);
+        $this->setFileHash($file, $this->calcHash($fileContent));
+    }
 
-        $hash = $this->calcHash($fileContent);
+    public function setFileHash(string $file, string $hash): void
+    {
+        $file = $this->cacheDirectory->getRelativePathTo($file);
 
         if ($this->isDryRun && $this->cache->has($file) && $this->cache->get($file) !== $hash) {
             $this->cache->clear($file);
-
-            return;
+        } else {
+            $this->cache->set($file, $hash);
         }
 
-        $this->cache->set($file, $hash);
+        if (self::WRITE_FREQUENCY === ++$this->writeCounter) {
+            $this->writeCounter = 0;
+            $this->writeCache();
+        }
     }
 
     private function readCache(): void
@@ -124,6 +125,7 @@ final class FileCacheManager implements CacheManagerInterface
 
         if (null === $cache || !$this->signature->equals($cache->getSignature())) {
             $cache = new Cache($this->signature);
+            $this->signatureWasUpdated = true;
         }
 
         $this->cache = $cache;
@@ -134,8 +136,8 @@ final class FileCacheManager implements CacheManagerInterface
         $this->handler->write($this->cache);
     }
 
-    private function calcHash(string $content): int
+    private function calcHash(string $content): string
     {
-        return crc32($content);
+        return CodeHasher::calculateCodeHash($content);
     }
 }

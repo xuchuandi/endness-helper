@@ -15,9 +15,9 @@ use Hyperf\HttpServer\Contract\RequestInterface;
 use Hyperf\Logger\LoggerFactory;
 use Hyperf\Redis\RedisFactory;
 use Hyperf\Server\ServerFactory;
-use Hyperf\Utils\ApplicationContext;
-use Hyperf\Utils\Codec\Json;
-use Hyperf\Utils\Context;
+use Hyperf\Context\ApplicationContext;
+use Hyperf\Codec\Json;
+use Hyperf\Context\Context;
 
 if (! function_exists('container')) {
     /**

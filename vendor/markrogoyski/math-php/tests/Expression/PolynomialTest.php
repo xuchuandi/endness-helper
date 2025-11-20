@@ -1033,7 +1033,7 @@ class PolynomialTest extends \PHPUnit\Framework\TestCase
         $roots = $polynomialA->roots();
 
         // Then
-        $this->assertEquals($expected_roots, $roots);
+        $this->assertEqualsWithDelta($expected_roots, $roots, 0.00001);
     }
 
     /**
@@ -1270,7 +1270,7 @@ class PolynomialTest extends \PHPUnit\Framework\TestCase
         $poly = new Polynomial($poly);
 
         $companion = $poly->companionMatrix();
-        $this->assertEquals($expected_matrix, $companion->getMatrix(), '', .0000001);
+        $this->assertEqualsWithDelta($expected_matrix, $companion->getMatrix(), .0000001);
     }
 
     /**
