@@ -20,13 +20,13 @@ class OrgMenuServiceConsumer extends AbstractServiceClient implements OrgMenuSer
      * 定义对应服务提供者的服务名称.
      * @var string
      */
-    protected $serviceName = 'OrgMenuService';
+    protected string $serviceName = 'OrgMenuService';
 
     /**
      * 定义对应服务提供者的服务协议.
      * @var string
      */
-    protected $protocol = 'jsonrpc-http';
+    protected string $protocol = 'jsonrpc-http';
 
     /**
      * 添加菜单.

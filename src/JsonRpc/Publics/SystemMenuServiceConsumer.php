@@ -20,13 +20,13 @@ class SystemMenuServiceConsumer extends AbstractServiceClient implements SystemM
      * 定义对应服务提供者的服务名称.
      * @var string
      */
-    protected $serviceName = 'SystemMenuService';
+    protected string $serviceName = 'SystemMenuService';
 
     /**
      * 定义对应服务提供者的服务协议.
      * @var string
      */
-    protected $protocol = 'jsonrpc-http';
+    protected string $protocol = 'jsonrpc-http';
 
     /**
      * 添加菜单.

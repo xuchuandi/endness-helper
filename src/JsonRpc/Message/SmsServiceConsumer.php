@@ -20,13 +20,13 @@ class SmsServiceConsumer extends AbstractServiceClient implements SmsServiceInte
      * 定义对应服务提供者的服务名称.
      * @var string
      */
-    protected $serviceName = 'SmsService';
+    protected string $serviceName = 'SmsService';
 
     /**
      * 定义对应服务提供者的服务协议.
      * @var string
      */
-    protected $protocol = 'jsonrpc-http';
+    protected string $protocol = 'jsonrpc-http';
 
     public function sendSms(string $phone, string $phoneCountry, string $alias, array $templateParam): array
     {

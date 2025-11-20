@@ -20,13 +20,13 @@ class OrgServiceConsumer extends AbstractServiceClient implements OrgServiceInte
      * 定义对应服务提供者的服务名称.
      * @var string
      */
-    protected $serviceName = 'OrgService';
+    protected string $serviceName = 'OrgService';
 
     /**
      * 定义对应服务提供者的服务协议.
      * @var string
      */
-    protected $protocol = 'jsonrpc-http';
+    protected string $protocol = 'jsonrpc-http';
 
     /**
      * 添加机构和项目绑定关系.

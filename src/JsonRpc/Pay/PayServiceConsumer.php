@@ -20,13 +20,13 @@ class PayServiceConsumer extends AbstractServiceClient implements PayServiceInte
      * 定义对应服务提供者的服务名称.
      * @var string
      */
-    protected $serviceName = 'PayService';
+    protected string $serviceName = 'PayService';
 
     /**
      * 定义对应服务提供者的服务协议.
      * @var string
      */
-    protected $protocol = 'jsonrpc-http';
+    protected string $protocol = 'jsonrpc-http';
 
     /**
      * 下单.
