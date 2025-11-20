@@ -11,6 +11,8 @@ declare(strict_types=1);
  */
 namespace Endness\Helper;
 
+use function Hyperf\Config\config;
+
 class ConfigHelper
 {
     /**
