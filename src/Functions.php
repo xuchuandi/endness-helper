@@ -19,6 +19,14 @@ use Hyperf\Context\ApplicationContext;
 use Hyperf\Codec\Json;
 use Hyperf\Context\Context;
 
+
+//定义缓存存放的主目录
+if (! defined('RUNTIME_BASE_PATH') && defined('BASE_PATH')) {
+    define('RUNTIME_BASE_PATH', str_starts_with(BASE_PATH, 'phar://') ? '/tmp/bailing/' . \Hyperf\Support\env('APP_NAME') : BASE_PATH . '/runtime');
+}
+
+
+
 if (! function_exists('container')) {
     /**
      * 容器实例.
