@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 /**
- * This file is part of Kuaijing Bailing.
+ * This file is part of endness Bailing.
  *
- * @link     https://www.kuaijingai.com
- * @document https://help.kuaijingai.com
- * @contact  www.kuaijingai.com 7*12 9:00-21:00
+ * @link     https://www.endnessai.com
+ * @document https://help.endnessai.com
+ * @contact  www.endnessai.com 7*12 9:00-21:00
  */
 namespace Endness\Helper;
 

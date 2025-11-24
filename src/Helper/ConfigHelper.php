@@ -22,6 +22,12 @@ class ConfigHelper
     public static function getConfig(string $name)
     {
         $configArr = config('systemConfig');
+        if (is_string($configArr)) {
+            $decoded = json_decode($configArr, true);
+            if (json_last_error() === JSON_ERROR_NONE) {
+                $configArr =  $decoded;
+            }
+        }
 
         //若存在值，则返回
         if (isset($configArr[$name])) {
