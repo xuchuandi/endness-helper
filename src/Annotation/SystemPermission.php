@@ -11,12 +11,10 @@ declare(strict_types=1);
  */
 namespace Endness\Annotation;
 
-        use Hyperf\Di\Annotation\AbstractAnnotation;
+use Attribute;
+use Hyperf\Di\Annotation\AbstractAnnotation;
 
-/**
- * @Annotation
- * @Target({"CLASS", "METHOD"})
- */
+#[Attribute(Attribute::TARGET_CLASS | Attribute::TARGET_METHOD)]
 class SystemPermission extends AbstractAnnotation
 {
     /**

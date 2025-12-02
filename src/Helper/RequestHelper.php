@@ -161,4 +161,31 @@ class RequestHelper
         }
         return $uid;
     }
+
+    /**
+     * 获取当前使用协议.
+     */
+    public static function getClientScheme(?ServerRequestInterface $request = null): string
+    {
+        if (! $request) {
+            $request = Context::get(ServerRequestInterface::class);
+        }
+
+        if (! $request) {
+            return 'https';
+        }
+
+        $scheme = $request->getHeaderLine('x-forwarded-proto');
+        if (! empty($scheme)) {
+            return $scheme;
+        }
+
+        $scheme = $request->getHeaderLine('scheme');
+        if (! empty($scheme)) {
+            return $scheme;
+        }
+
+        return 'https';
+    }
+
 }

@@ -16,6 +16,7 @@ use Hyperf\Logger\LoggerFactory;
 use Hyperf\Redis\RedisFactory;
 use Hyperf\Server\ServerFactory;
 use Hyperf\Context\ApplicationContext;
+use Endness\Helper\RequestHelper;
 use Hyperf\Codec\Json;
 use Hyperf\Context\Context;
 
@@ -366,5 +367,17 @@ if (! function_exists('getCheckedBuild')) {
         }
 
         return $returnData;
+    }
+}
+
+if (! function_exists('domain')) {
+    /**
+     * 获取数据库中的配置值.
+     * @param string $name 配置项的名称
+     * @return mixed|string
+     */
+    function domain(): string
+    {
+        return RequestHelper::getClientScheme() . '://' . RequestHelper::getClientDomain();
     }
 }
