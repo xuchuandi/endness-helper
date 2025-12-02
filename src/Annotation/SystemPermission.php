@@ -35,12 +35,17 @@ class SystemPermission extends AbstractAnnotation
     /**
      * @var string
      */
-    public $menu_type = '1'; // 1展示，0归类
+    public $activeIcon = ''; // 选中后图标
 
     /**
      * @var string
      */
-    public $url_type = 'path'; // 	URL类别(path, frame_url, target_url)
+    public $menuType = '1'; // 1展示，0归类
+
+    /**
+     * @var string
+     */
+    public $urlType = 'path'; // 	URL类别(path, frame_url, target_url)
 
     /**
      * @var string
@@ -81,4 +86,42 @@ class SystemPermission extends AbstractAnnotation
         'resume' => '恢复一条',
         'resumeMulti' => '恢复批量',
     ];*/
+
+    /**
+     * @param string $module
+     * @param string $action
+     * @param string $alias
+     * @param string $sort
+     * @param string $app
+     * @param string $param
+     * @param string $icon
+     * @param string $activeIcon
+     * @param string $menuType
+     * @param string $urlType
+     * @author Endness
+     */
+    public function __construct(
+        string $module,
+        string $action,
+        string $alias,
+        string $sort,
+        string $app,
+        string $param = '',
+        string $icon = '',
+        string $activeIcon = '',
+        string $menuType = '1',
+        string $urlType = 'path',
+    )
+    {
+        $this->module = $module;
+        $this->action = $action;
+        $this->alias = $alias;
+        $this->sort  = $sort;
+        $this->app = $app;
+        $this->param = $param;
+        $this->icon = $icon;
+        $this->activeIcon = $activeIcon;
+        $this->menuType = $menuType;
+        $this->urlType = $urlType;
+    }
 }

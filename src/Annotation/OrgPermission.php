@@ -96,4 +96,48 @@ class OrgPermission extends AbstractAnnotation
         'resume' => '恢复一条',
         'resumeMulti' => '恢复批量',
     ];*/
+
+    /**
+     * @param string $module
+     * @param string $action
+     * @param string $alias
+     * @param string $sort
+     * @param string $app
+     * @param string $param
+     * @param string $icon
+     * @param string $activeIcon
+     * @param string $menuType
+     * @param string $urlType
+     * @param string $orgId
+     * @param string $parentOrgId
+     * @author Endness
+     */
+    public function __construct(
+        string $module,
+        string $action,
+        string $alias,
+        string $sort,
+        string $app,
+        string $param = '',
+        string $icon = '',
+        string $activeIcon = '',
+        string $menuType = '1',
+        string $urlType = 'path',
+        string $orgId = '0',
+        string $parentOrgId = '0',
+    )
+    {
+        $this->module = $module;
+        $this->action = $action;
+        $this->alias = $alias;
+        $this->sort  = $sort;
+        $this->app = $app;
+        $this->param = $param;
+        $this->icon = $icon;
+        $this->activeIcon = $activeIcon;
+        $this->menuType = $menuType;
+        $this->urlType = $urlType;
+        $this->orgId = $orgId;
+        $this->parentOrgId = $parentOrgId;
+    }
 }
