@@ -61,7 +61,7 @@ class UploadHelper
             return ApiHelper::genErrorData('请上传文件');
         }
 
-        $allowExtension = ['png', 'gif', 'jpeg', 'jpg', 'zip', 'txt', 'xls', 'doc', 'docs', 'pdf', 'rar'];
+        $allowExtension = ['png', 'gif', 'jpeg', 'jpg', 'zip', 'txt', 'xls', 'doc', 'docs', 'pdf', 'rar', 'mp4', 'avi', 'mpg', 'mov', 'avi', 'wmv'];
         if (! in_array($file->getExtension(), $allowExtension)) {
             return ApiHelper::genErrorData('文件格式（' . $file->getExtension() . '）不允许，只允许 ' . implode('，', $allowExtension));
         }

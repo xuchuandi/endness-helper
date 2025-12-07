@@ -49,6 +49,7 @@
     "hyperf/validation": "^3.1",
     "hyperf/xxl-job-incubator": "^0.4.2",
     "league/flysystem": "^2.3",
+    "overtrue/flysystem-cos": "^4.0",
     "tencentcloud/captcha": "^3.0",
     "viest/php-ext-xlswriter-ide-helper": "^1.3"
   },
