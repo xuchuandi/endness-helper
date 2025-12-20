@@ -133,6 +133,8 @@
       <excludeFolder url="file://$MODULE_DIR$/vendor/hyperf/xxl-job-incubator" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/viest/php-ext-xlswriter-ide-helper" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/hyperf/filesystem" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/overtrue/flysystem-cos" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/overtrue/qcloud-cos-client" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />

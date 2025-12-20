@@ -112,7 +112,7 @@ class SystemMiddleware implements MiddlewareInterface
      */
     private function allowAccess(int $role_id)
     {
-        $authRedisKey = 'SYSTEM_RBAC_' . $role_id;
+        $authRedisKey = 'SYSTEM_RBAC:' . $role_id;
         $rbacAccess = [];
         try {
             //从redis中获取该用户最新菜单权限
