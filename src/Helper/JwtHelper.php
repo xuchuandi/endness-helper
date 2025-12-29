@@ -101,6 +101,15 @@ class JwtHelper
     }
 
     /**
+     * 获取用户登录信息.
+     */
+    public static function userData(null|string $keyLabel = 'USER'): object|null
+    {
+        $userData = self::decodeWithRequest($keyLabel);
+        return $userData?->data;
+    }
+
+    /**
      * 获取密钥.
      */
     private static function getKey(string $label = 'SYSTEM'): string

@@ -115,4 +115,13 @@ class ApiHelper
         logger()->error($msg, [$exception->getCode(), $exception->getMessage()]);
         return self::genErrorData(sprintf('%s[%s]', $msg, $exception->getMessage()), ApiHelper::SERVICE_ERROR);
     }
+
+    /**
+     * 检测本类生成的数据，成功或失败.
+     * @param $dataArr
+     */
+    public static function checkDataOk($dataArr): bool
+    {
+        return $dataArr['code'] == self::NORMAL_SUCCESS;
+    }
 }
