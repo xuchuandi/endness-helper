@@ -18,6 +18,11 @@ use function Hyperf\Support\env;
 
 class IPReader implements IPReaderInterface
 {
+
+    /**
+     * 获取IP地址信息.
+     * @return string
+     */
     public function read(): string
     {
         try {
