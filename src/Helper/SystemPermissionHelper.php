@@ -18,6 +18,7 @@ use Hyperf\Di\Annotation\AnnotationCollector;
 use Hyperf\Context\ApplicationContext;
 use Hyperf\Codec\Json;
 use function Hyperf\Support\env;
+use function Hyperf\Config\config;
 
 class SystemPermissionHelper
 {
