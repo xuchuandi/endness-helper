@@ -212,6 +212,21 @@ class UploadHelper
         return ['fileName' => $uploadFile, 'fileUrl' => fileDomain($uploadFile)];
     }
 
+
+    /**
+     * 上传本地指定文件流.
+     * @param string $localStream
+     * @param string $fileName
+     * @return array
+     * @throws FilesystemException
+     */
+    public function uploadStreamFilesystem(string $localStream,string $fileName):array
+    {
+        // Add filesystem local file
+        $this->filesystemFactory->get($this->filesystemType)->write($fileName, $localStream); //相应判断文件应fileExists  null 写入成功 二进制流
+        return ['fileName' => $fileName, 'fileUrl' => fileDomain($fileName)];
+    }
+
     /**
      * 下载腾讯云文件至本地(服务应用内部调用).
      * @throws FilesystemException
