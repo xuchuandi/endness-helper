@@ -157,7 +157,7 @@ class SystemPermissionHelper
         $insertData = [
             'name' => $name,
             'parent_id' => $this->moduleMenuId[$parent] ?? 0,
-            'url_type' => $annotation->url_type ?? null,
+            'url_type' => $annotation->url_type ?? 'path',
             'icon' => $annotation->icon ?? null,
             'menu_type' => $annotation->menu_type ?? '1',
             'alias' => $annotation->alias ?? null,
