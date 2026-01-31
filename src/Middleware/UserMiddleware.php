@@ -39,10 +39,6 @@ class UserMiddleware implements MiddlewareInterface
 
         $jwtData->data->tokenType = 'user';
 
-        if (!empty($jwtData->data->expire_unix) && $jwtData->data->expire_unix < time()) {
-            return self::json('用户权益已到期', ApiHelper::AUTH_ERROR);
-        }
-
         //将登录信息存储到协程上下文
         contextSet('nowUser', $jwtData->data);
         return $handler->handle($request);
